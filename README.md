@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Coffee Connect</title>
+    <title>CUWHere</title>
     <style>
         /* Add your custom CSS styles here */
 		 body {
