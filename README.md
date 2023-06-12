@@ -124,12 +124,12 @@
     <script>
         // Replace with your Firebase configuration
         const firebaseConfig = {
-  apiKey: "API KEY",
-  authDomain: "AUTHDOMAIN",
-  projectId: "PROJECTID",
-  storageBucket: "STORAGEBUCKET",
-  messagingSenderId: "MESSAGESENDEERID",
-  appId: "APP ID",
+  apiKey: "AIzaSyC-wz3ukAGRLcSSGmfLx0kEYXGXFCWzovA",
+  authDomain: "cu-interactive.firebaseapp.com",
+  projectId: "cu-interactive",
+  storageBucket: "cu-interactive.appspot.com",
+  messagingSenderId: "1024729531114",
+  appId: "1:1024729531114:web:aee52ae556f27ce4a78d93",
         };
 
         // Initialize Firebase
