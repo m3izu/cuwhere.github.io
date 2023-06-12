@@ -96,7 +96,7 @@
 
 <body>
     <header>
-        <h1>Coffee Connect</h1>
+        <h1>CUwWhere</h1>
     </header>
     <main>
         <section>
