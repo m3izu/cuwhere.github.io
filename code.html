@@ -144,48 +144,48 @@
         const coffeeList = document.getElementById('coffeeList');
 
         // Upload form submission
-        coffeeForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+coffeeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-            // Get form values
-            const coffeeName = document.getElementById('coffeeName').value;
-            const brand = document.getElementById('brand').value;
-            const roast = document.getElementById('roast').value;
-            const image = document.getElementById('image').files[0];
+    // Get form values
+    const coffeeName = document.getElementById('coffeeName').value;
+    const brand = document.getElementById('brand').value;
+    const roast = document.getElementById('roast').value;
+    const image = document.getElementById('image').files[0];
 
-            // Upload image to Firebase storage
-            const storageRef = storage.ref(`coffeeImages/${image.name}`);
-            const uploadTask = storageRef.put(image);
+    // Upload image to Firebase storage
+    const storageRef = storage.ref(`coffeeImages/${image.name}`);
+    const uploadTask = storageRef.put(image);
 
-            uploadTask.on('state_changed', (snapshot) => {
-                // Handle upload progress
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log(`Upload progress: ${progress}%`);
-            }, (error) => {
+    uploadTask.on('state_changed', (snapshot) => {
+        // Handle upload progress
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload progress: ${progress}%`);
+    }, (error) => {
+        console.error(error);
+    }, () => {
+        // Image upload complete
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // Save coffee data to database
+            const coffeeData = {
+                coffeeName: coffeeName,
+                brand: brand,
+                roast: roast,
+                image: downloadURL
+            };
+            const newCoffeeRef = database.ref('coffeeItems').push();
+            newCoffeeRef.set(coffeeData).then(() => {
+                console.log('Coffee item uploaded successfully');
+                // Reset form
+                coffeeForm.reset();
+            }).catch((error) => {
                 console.error(error);
-            }, () => {
-                // Image upload complete
-                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    // Save coffee data to database
-                    const coffeeData = {
-                        coffeeName: coffeeName,
-                        brand: brand,
-                        roast: roast,
-                        image: downloadURL
-                    };
-                    const newCoffeeRef = database.ref('coffeeItems').push();
-                    newCoffeeRef.set(coffeeData).then(() => {
-                        console.log('Coffee item uploaded successfully');
-                        // Reset form
-                        coffeeForm.reset();
-                    }).catch((error) => {
-                        console.error(error);
-                    });
-                }).catch((error) => {
-                    console.error(error);
-                });
             });
+        }).catch((error) => {
+            console.error(error);
         });
+    });
+});
 
       // Load recent coffee items from database
 const coffeeItemsRef = database.ref('coffeeItems');
