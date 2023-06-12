@@ -187,20 +187,36 @@
             });
         });
 
-        // Load recent coffee items from database
-        const coffeeItemsRef = database.ref('coffeeItems');
-        coffeeItemsRef.on('child_added', (snapshot) => {
-            const coffeeData = snapshot.val();
-            const coffeeItem = `
-                <li>
-                    <h3>${coffeeData.coffeeName}</h3>
-                    <p><strong>Brand:</strong> ${coffeeData.brand}</p>
-                    <p><strong>Roast:</strong> ${coffeeData.roast}</p>
-                    <img src="${coffeeData.image}" alt="${coffeeData.coffeeName}">
-                </li>
-            `;
-            coffeeList.insertAdjacentHTML('beforeend', coffeeItem);
-        });
+      // Load recent coffee items from database
+const coffeeItemsRef = database.ref('coffeeItems');
+coffeeItemsRef.on('child_changed', (snapshot) => {
+    const coffeeData = snapshot.val();
+    const coffeeItem = `
+        <li>
+            <h3>${coffeeData.coffeeName}</h3>
+            <p><strong>Brand:</strong> ${coffeeData.brand}</p>
+            <p><strong>Roast:</strong> ${coffeeData.roast}</p>
+            <img src="${coffeeData.image}" alt="${coffeeData.coffeeName}">
+        </li>
+    `;
+    coffeeList.insertAdjacentHTML('beforeend', coffeeItem);
+});
+
+// Additionally, you can trigger the callback for existing items using 'once' method
+coffeeItemsRef.once('value', (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+        const coffeeData = childSnapshot.val();
+        const coffeeItem = `
+            <li>
+                <h3>${coffeeData.coffeeName}</h3>
+                <p><strong>Brand:</strong> ${coffeeData.brand}</p>
+                <p><strong>Roast:</strong> ${coffeeData.roast}</p>
+                <img src="${coffeeData.image}" alt="${coffeeData.coffeeName}">
+            </li>
+        `;
+        coffeeList.insertAdjacentHTML('beforeend', coffeeItem);
+    });
+});
 
     </script>
 </body>
